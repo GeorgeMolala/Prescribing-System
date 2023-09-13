@@ -1,0 +1,58 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Home";
+
+}
+<div class="illus-group-col">
+    <div  class="illus-group-row">
+        <a asp-controller="Doctor" asp-action="Index" class="block-link">
+            <div class="illustration-block illustration-doctor illus-small">
+
+            </div>
+            <div class="illus-title illus-title-small">
+                <div>
+                    <h4>Doctor</h4>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="illus-group-row">
+        <a asp-controller="Pharmacy" asp-action="Index" class="block-link">
+            <div class="illustration-block illustration-pharmacy illus-small">
+
+            </div>
+            <div class="illus-title illus-title-small">
+                <div>
+                    <h4>Pharmacies</h4>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="illus-group-row">
+        <a asp-controller="Pharmacist" asp-action="Index" class="block-link">
+            <div class="illustration-block illustration-pharmacist illus-small">
+
+            </div>
+            <div class="illus-title illus-title-small">
+                <div>
+                    <h4>Pharmacists</h4>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="illus-group-row">
+        <a asp-controller="MedicalPractice" asp-action="Index" class="block-link">
+            <div class="illustration-block illustration-practice illus-small">
+
+            </div>
+            <div class="illus-title illus-title-small">
+                <div>
+                    <h4>ICD</h4>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<hr />
+
+

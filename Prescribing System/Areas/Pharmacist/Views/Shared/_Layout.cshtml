@@ -1,0 +1,143 @@
+﻿@{ 
+    var user = UserSingleton.GetLoggedUser();
+    var data = new PharmacistDbcontext();
+    var pharmacist = data.GetPharmacistWithId(user.UserId);
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/Custom.css"/>
+</head>
+<body class="illustration illustration-light">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 sticky-top">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img width="70" height="50" class="global-logo" src="~/images/logo-pixelated.png" />
+                </a>
+                <div class="navbar-nav navbar-expand mr-sm-5 ml-4">
+                    <form asp-controller="Home" asp-action="Search" method="get" class="box-columned pl-4 ml-4">
+                        <div class="box-columned box-centered">
+                            <input type="text" min="3" maxlength="20" name="keyword" placeholder="Search" />
+                        </div>
+                        <div class="box-columned box-centered">
+                            <button type="submit" class="btn btn-outline-secondary"><img width="20" height="20" src="~/icons/search-icon.png" /></button>
+                        </div>
+                    </form>
+                </div>
+                <nav class="navbar-nav navbar-expand mr-sm-5 mr-md-0 ">
+                    <div class="navbar-nav navbar-right mb-sm-1 pt-1 mw-100">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary s_top-right_drop-btn"
+                                    id="navDropdown" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="">Menu</span>
+                            </button>
+                            <span class="badge">Pharmacist</span>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-header">
+                                    @(pharmacist.LastName + " " + pharmacist.FirstName)
+                                </a>
+                                <a class="dropdown-item"
+                                   asp-controller="Home" asp-action="Index">
+                                    Home
+                                </a>
+                                @if (PatientModel.IsFound())
+                                {
+                                    <a class="dropdown-item"
+                                   asp-controller="Patient"
+                                   asp-action="Index">
+                                        Searched Patient
+                                    </a>
+                                }
+                                <a class="dropdown-item"
+                                   asp-controller="Home"
+                                   asp-action="Profile">
+                                    Profile
+                                </a>
+                                <a class="dropdown-item"
+                                   asp-controller="Home"
+                                   asp-action="About">
+                                    About
+                                </a>
+                                
+                                <form method="post" asp-action="Logout"
+                                      asp-controller="Account"
+                                      asp-area="">
+                                    <input type="submit" value="Log Out"
+                                           class="dropdown-item logout-item" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+    </header>
+    <div class="container m-sm-0 m-md-auto">
+        <nav aria-label="breadcrumb">
+            @{
+                var controller = ViewContext.RouteData.Values["controller"].ToString();
+                var action = ViewContext.RouteData.Values["action"].ToString();
+                var parameter = ViewContext.RouteData.Values["id"] ?? ViewContext.RouteData.Values["idNumber"];
+                var slug = ViewContext.RouteData.Values["slug"];
+            }
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                @if (!(controller == "Home" || controller =="Analytic"))
+                {
+                    <li class="breadcrumb-item">
+                        <a asp-controller="@controller"
+                       asp-action="Index">
+                            @controller
+                        </a>
+                    </li>
+                    if (!(action == "Index"))
+                    {
+                        <li class="breadcrumb-item"
+                            aria-current="page">
+                            @(action == "Dispense" || action == "RejectLine" || action=="RejectPrescription" ?"Line" : @action)
+                        </li>
+                        if (!(parameter == null))
+                        {
+                            <li class="breadcrumb-item active">
+                                @parameter@slug
+                            </li>
+                        }
+                    }
+                }
+            </ol>
+        </nav>
+        @{
+            if (!(TempData["Message"] == null || TempData["Message"].ToString() == ""))
+            {
+                <script>
+                        alert("@(TempData["Message"])");
+                </script>
+            }
+        }
+        <div class="b_boxed">
+            <div>
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - E-P - <a asp-area="" asp-controller="Home" asp-action="About">About</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
